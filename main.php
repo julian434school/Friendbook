@@ -50,6 +50,28 @@
                         <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
                         <h5>Email: [Email]</h5>
                         <h5>Handy: 076 528 21 82</h5>
+                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
+                        <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
+                        <!-- Profile Pic -->
+                        <div>
+                            <!-- <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo"> -->
+                            <h1>[PROFILE PIC]</h1>
+                        </div>
+                        <h3>Julian Mathis</h3>
+                        <h5>Land: Schweiz</h5>
+                        <h5>Canton: Basel</h5>
+                        <h5>Gender: Chad</h5>
+                        <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
+                        <h5>Email: [Email]</h5>
+                        <h5>Handy: 076 528 21 82</h5>
+                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
                         <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
 
                     </div>
@@ -71,27 +93,7 @@
                         <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
                         <h5>Email: [Email]</h5>
                         <h5>Handy: 076 528 21 82</h5>
-                        <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
-
-                    </div>
-
-                </div>
-
-                <div class="col-lg-4">
-
-                    <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-                        <!-- Profile Pic -->
-                        <div>
-                            <!-- <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo"> -->
-                            <h1>[PROFILE PIC]</h1>
-                        </div>
-                        <h3>Julian Mathis</h3>
-                        <h5>Land: Schweiz</h5>
-                        <h5>Canton: Basel</h5>
-                        <h5>Gender: Chad</h5>
-                        <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
-                        <h5>Email: [Email]</h5>
-                        <h5>Handy: 076 528 21 82</h5>
+                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
                         <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
 
                     </div>
@@ -117,6 +119,8 @@
                         <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
                         <h5>Email: [Email]</h5>
                         <h5>Handy: 076 528 21 82</h5>
+                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
+
                         <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
 
                     </div>
@@ -138,6 +142,7 @@
                         <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
                         <h5>Email: [Email]</h5>
                         <h5>Handy: 076 528 21 82</h5>
+                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
                         <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
 
                     </div>
@@ -159,6 +164,7 @@
                         <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
                         <h5>Email: [Email]</h5>
                         <h5>Handy: 076 528 21 82</h5>
+                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
                         <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
 
                     </div>
