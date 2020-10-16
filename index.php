@@ -119,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
       </div>
     </div>
   </nav>
+  
   <header class="masthead text-white text-center" style="background:url('assets/img/bg-masthead.jpg')no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
     <div class="container">
@@ -145,36 +146,44 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
             <div class="modal fade" id=registerModal tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
-
                   <div class="modal-header">
                     <h5 class="modal-title" id="registerModalLabel" style="color:#2e2e2e">Registrieren</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-
                   <div class="modal-body">
-                    <!-- Registrierung füer Friendbook Modal -->
+                    <!-- Registrierung für Friendbook Modal -->
                     <form action="" method="post">
                       <!-- Vorname -->
                       <div class="form-group">
                         <label for="firstname">Vorname *</label>
-                        <input type="text" name="firstname" class="form-control" id="firstname" value="<?php echo $firstname ?>" placeholder="Vorname" maxlength="30" required="true">
+                        <input type="text" name="firstname" class="form-control"
+                        id="firstname" value="<?php echo $firstname ?>" placeholder="Vorname"
+                        maxlength="30" required="true">
                       </div>
                       <!-- Nachname -->
                       <div class="form-group">
                         <label for="lastname">Nachname *</label>
-                        <input type="text" name="lastname" class="form-control" id="lastname" value="<?php echo $lastname ?>" placeholder="Nachnamen" maxlength="30" required="true">
+                        <input type="text" name="lastname" class="form-control"
+                        id="lastname" value="<?php echo $lastname ?>" placeholder="Nachnamen"
+                        maxlength="30" required="true">
                       </div>
                       <!-- Email -->
                       <div class="form-group">
                         <label for="lastname">Email *</label>
-                        <input type="email" name="email" class="form-control" id="email" value="<?php echo $email ?>" placeholder="Email" maxlength="80" required="true">
+                        <input type="email" name="email" class="form-control"
+                        id="email" value="<?php echo $email ?>" placeholder="Email"
+                        maxlength="80" required="true">
                       </div>
                       <!-- Password -->
                       <div class="form-group">
                         <label for="lastname">Passwort *</label>
-                        <input type="password" name="password" class="form-control" id="password" placeholder="Passwort" pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute." maxlength="255" required="true">
+                        <input type="password" name="password" class="form-control"
+                        id="password" placeholder="Passwort"
+                        pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                        title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute."
+                        maxlength="255" required="true">
                         <p style="color:darkgray">
                           *Gross- und Kleinbuchstaben, Zahlen, Sonderzeichen, min. 8 Zeichen, keine Umlaute
                         </p>
@@ -184,9 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                         <button type="submit" class="btn btn-primary">Registrieren</button>
                       </div>
                     </form>
-
                   </div>
-
                 </div>
               </div>
             </div>
@@ -207,11 +214,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                     <form action="" method="post">
                       <!-- benutzername -->
                       <div class="form-group">
-                        <input type="text" name="email" class="form-control" id="email" value="<?php echo $email ?>" placeholder="Email" title="Email" maxlength="30" required="true">
+                        <input type="text" name="email" class="form-control"
+                        id="email" value="<?php echo $email ?>" placeholder="Email"
+                        title="Email" maxlength="30" required="true">
                       </div>
                       <!-- password -->
                       <div class="form-group">
-                        <input type="password" name="password" class="form-control" id="password" placeholder="Passwort" title="Passwort" maxlength="255" required="true">
+                        <input type="password" name="password" class="form-control"
+                        id="password" placeholder="Passwort" title="Passwort"
+                        maxlength="255" required="true">
                       </div>
 
                   </div>
