@@ -246,7 +246,7 @@
                                 <div class="form-group">
                                     <label for="tele">Telefon</label>
                                     <input type="text" name="tele" class="form-control"
-                                    id="tele" value="<?php echo $tele ?>" placeholder="Telefon"
+                                    id="tele" value="<?php echo $tele ?>" placeholder="Telefon-Format: '0612345678'"
                                     minlength="9" maxlength="13" required="false"
                                     pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
                                 </div>

@@ -119,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
       </div>
     </div>
   </nav>
+  
   <header class="masthead text-white text-center" style="background:url('assets/img/bg-masthead.jpg')no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
     <div class="container">
@@ -145,14 +146,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
             <div class="modal fade" id=registerModal tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
-
                   <div class="modal-header">
                     <h5 class="modal-title" id="registerModalLabel" style="color:#2e2e2e">Registrieren</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-
                   <div class="modal-body">
                     <!-- Registrierung für Friendbook Modal -->
                     <form action="" method="post">
@@ -194,9 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                         <button type="submit" class="btn btn-primary">Registrieren</button>
                       </div>
                     </form>
-
                   </div>
-
                 </div>
               </div>
             </div>
