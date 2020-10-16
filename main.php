@@ -26,10 +26,13 @@
                 </form>
 
                 <!-- Nav Add Friend -->
-                <a class="btn btn-success ml-auto mr-0" role="button" href="#" data-toggle="modal" data-target="#registerModal">Freund hinzufügen</a>
+                <a class="btn btn-success ml-auto mr-0" role="button" href="#" data-toggle="modal" data-target="#addFModal">Freund hinzufügen</a>
             </div>
         </div>
     </nav>
+
+
+
     <header class="masthead text-white" style="background-color: #baddff;">
         <div class="container">
             <h1>Freunde</h1>
@@ -166,13 +169,92 @@
                         <h5>Handy: 076 528 21 82</h5>
                         <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
                         <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
-
                     </div>
-
                 </div>
-
             </div>
 
+            <!-- Add Friend Modal -->
+            <div class="modal fade" id=addFModal tabindex="-1" role="dialog" aria-labelledby="addFModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addFModalLabel" style="color:#2e2e2e">Füge Freund hinzu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Freund Hinzufügen -->
+                            <form action="" method="post">
+                                <!-- Vorname -->
+                                <div class="form-group">
+                                    <label for="fname">Vorname *</label>
+                                    <input type="text" name="fname" class="form-control"
+                                    id="fname" value="<?php echo $fname ?>" placeholder="Vorname"
+                                    maxlength="30" required="true">
+                                </div>
+                                <!-- Nachname -->
+                                <div class="form-group">
+                                    <label for="name">Nachname *</label>
+                                    <input type="text" name="name" class="form-control"
+                                    id="name" value="<?php echo $name ?>" placeholder="Name"
+                                    maxlength="30" required="true">
+                                </div>
+                                <!-- Geschlecht -->
+                                <div class="form-group">
+                                    <label for="gender">Geschlecht</label>
+                                    <input type="text" name="gender" class="form-control"
+                                    id="gender" value="<?php echo $gender ?>" placeholder="Geschlecht (M/F/O)"
+                                    maxlength="1" required="false" pattern="M|F|O">
+                                </div>
+                                <!-- Adresse -->
+                                <div class="form-group">
+                                    <label for="address">Strasse, Hausnr.</label>
+                                    <input type="text" name="address" class="form-control"
+                                    id="address" value="<?php echo $address ?>" placeholder="Adresse"
+                                    maxlength="50" required="false">
+                                </div>
+                                <!-- PLZ -->
+                                <div class="form-group">
+                                    <label for="plz">PLZ</label>
+                                    <input type="number" name="plz" class="form-control"
+                                    id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl"
+                                    maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
+                                </div>
+                                <!-- Ort -->
+                                <div class="form-group">
+                                    <label for="city">Ort</label>
+                                    <input type="text" name="city" class="form-control"
+                                    id="city" value="<?php echo $city ?>" placeholder="Stadt, Gemeinde, Dorf"
+                                    maxlength="30" required="false">
+                                </div>
+                                <!-- Kanton -->
+                                <div class="form-group">
+                                    <label for="canton">Kanton</label>
+                                    <input type="text" name="canton" class="form-control"
+                                    id="canton" value="<?php echo $canton ?>" placeholder="Kantons-Abk."
+                                    maxlength="2" required="false" pattern="[A-Z]{2}">
+                                </div>
+                                <!-- E-Mail -->
+                                <div class="form-group">
+                                    <label for="email">E-Mail</label>
+                                    <input type="email" name="email" class="form-control"
+                                    id="email" value="<?php echo $email ?>" placeholder="E-Mail"
+                                    maxlength="100" required="false">
+                                </div>
+                                <!-- Telefonnummer -->
+                                <div class="form-group">
+                                    <label for="tele">Telefon</label>
+                                    <input type="text" name="tele" class="form-control"
+                                    id="tele" value="<?php echo $tele ?>" placeholder="Telefon"
+                                    minlength="9" maxlength="13" required="false"
+                                    pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </header>
