@@ -216,7 +216,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       </div>
                       <!-- Nachname -->
                       <div class="form-group">
-                        <label for="lastname">Nachname *</label>
+                        <label for="lastname">Nachname</label>
                         <input type="text" name="lastname" class="form-control" id="lastname" value="<?php echo $lastname ?>" placeholder="Nachnamen" maxlength="30" required="true">
                       </div>
                       <!-- Email -->

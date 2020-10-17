@@ -5,14 +5,15 @@ include('dbconnector.inc.php');
 
 // Initialisierung
 $error = $message =  '';
-$fname = $name = $gender = $address = $plz = $city = $canton = $email = $tele = $pfpUpload = '';
+$fname = $name = $sex = $street = $plz = $city = $canton = $email = $tel = $profilepic = '';
 
 /*
 TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!!!!!
 */
 
 // Wurden Daten mit "POST" gesendet?
-if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    echo "Test 2";
     // Ausgabe des gesamten $_POST Arrays
     echo "<pre>";
     print_r($_POST);
@@ -129,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
         $error .= "Geben Sie bitte eine Telefonnummer ein.<br />";
     }
 
-    if(isset($_POST['pfpUpload'])) {
+    if (isset($_POST['pfpUpload'])) {
         $filename = 'validatedCustomFile';
         $input = fopen('php://input', 'rb');
         $file = fopen($filename, 'wb');
@@ -138,15 +139,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
         fclose($file);
     }
 
+
     // TODO, steht noch unter Bearbeitung
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if (empty($error)) {
         // INPUT Query erstellen, welches firstname, lastname, password, email in die Datenbank schreibt
-        $insertStatement = "INSERT into users(fname, name, gender, address, plz, city, canton, email, tele, pfpUpload) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $insertStatement = "INSERT into friend(name, fname, sex, street, city, plz, canton, tel, email, profilepic) VALUES (?,?,?,?,?,?,?,?,?,?)";
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($insertStatement);
         // Parameter an Query binden mit bind_param();
-        $password = password_hash($password, PASSWORD_DEFAULT);
         $stmt->bind_param("ssssissssb", $fname, $name, $gender, $address, $plz, $city, $canton, $email, $tele, $pfpUpload);
         // query ausführen mit execute();
         $stmt->execute();
@@ -354,63 +355,62 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                                 <!-- Vorname -->
                                 <div class="form-group">
                                     <label for="fname">Vorname *</label>
-                                    <input type="text" name="fname" class="form-control" id="fname" value="<?php echo $fname ?>" placeholder="Vorname" maxlength="30" required="true">
+                                    <input type="text" name="fname" class="form-control" id="fname" value="" placeholder="Vorname" maxlength="30" required="true">
                                 </div>
                                 <!-- Nachname -->
                                 <div class="form-group">
                                     <label for="name">Nachname *</label>
-                                    <input type="text" name="name" class="form-control" id="name" value="<?php echo $name ?>" placeholder="Name" maxlength="30" required="true">
+                                    <input type="text" name="name" class="form-control" id="name" value="" placeholder="Name" maxlength="30" required="true">
                                 </div>
                                 <!-- Geschlecht -->
                                 <div class="form-group">
                                     <label for="gender">Geschlecht</label>
-                                    <input type="text" name="gender" class="form-control" id="gender" value="<?php echo $gender ?>" placeholder="Geschlecht (M/F/O)" maxlength="1" required="false" pattern="M|F|O">
+                                    <input type="text" name="gender" class="form-control" id="gender" value="" placeholder="Geschlecht (M/F/O)" maxlength="1" required="false" pattern="M|F|O">
                                 </div>
                                 <!-- Adresse -->
                                 <div class="form-group">
                                     <label for="address">Strasse, Hausnr.</label>
-                                    <input type="text" name="address" class="form-control" id="address" value="<?php echo $address ?>" placeholder="Adresse" maxlength="50" required="false">
+                                    <input type="text" name="address" class="form-control" id="address" value="" placeholder="Adresse" maxlength="50" required="false">
                                 </div>
                                 <!-- PLZ -->
                                 <div class="form-group">
                                     <label for="plz">PLZ</label>
-                                    <input type="number" name="plz" class="form-control" id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl" maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
+                                    <input type="number" name="plz" class="form-control" id="plz" value="" placeholder="Postleitzahl" maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
                                 </div>
                                 <!-- Ort -->
                                 <div class="form-group">
                                     <label for="city">Ort</label>
-                                    <input type="text" name="city" class="form-control" id="city" value="<?php echo $city ?>" placeholder="Stadt, Gemeinde, Dorf" maxlength="30" required="false">
+                                    <input type="text" name="city" class="form-control" id="city" value="" placeholder="Stadt, Gemeinde, Dorf" maxlength="30" required="false">
                                 </div>
                                 <!-- Kanton -->
                                 <div class="form-group">
                                     <label for="canton">Kanton</label>
-                                    <input type="text" name="canton" class="form-control" id="canton" value="<?php echo $canton ?>" placeholder="Kantons-Abk." maxlength="2" required="false" pattern="[A-Z]{2}">
+                                    <input type="text" name="canton" class="form-control" id="canton" value="" placeholder="Kantons-Abk." maxlength="2" required="false" pattern="[A-Z]{2}">
                                 </div>
                                 <!-- E-Mail -->
                                 <div class="form-group">
                                     <label for="email">E-Mail</label>
-                                    <input type="email" name="email" class="form-control" id="email" value="<?php echo $email ?>" placeholder="E-Mail" maxlength="100" required="false">
+                                    <input type="email" name="email" class="form-control" id="email" value="" placeholder="E-Mail" maxlength="100" required="false">
                                 </div>
                                 <!-- Telefonnummer -->
                                 <div class="form-group">
                                     <label for="tele">Telefon</label>
-                                    <input type="text" name="tele" class="form-control" id="tele" value="<?php echo $tele ?>" placeholder="Telefon-Format: '0612345678'" minlength="9" maxlength="13" required="false" pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
+                                    <input type="text" name="tele" class="form-control" id="tele" value="" placeholder="Telefon-Format: '0612345678'" minlength="9" maxlength="13" required="false" pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
                                 </div>
 
-                                <!-- TODO DOESNT WORK YET - Profile Picture Upload -->
+                                <!-- Profile Picture Upload -->
                                 <label for="pfpUpload">Profilfoto</label>
                                 <div class="custom-file">
-                                    <input type="file" name="pfpUpload" class="custom-file-input" id="validatedCustomFile" required>
+                                    <input type="file" name="pfpUpload" class="custom-file-input" id="validatedCustomFile">
                                     <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
                                     <div class="invalid-feedback">Example invalid custom file feedback</div>
                                 </div>
 
-                                <!-- TODO - Button to submit info -->
+                                <div class="modal-footer">
+                                    <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success">Freund hinzufügen</button>
+                                </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success" value="submit">Freund hinzufügen</button>
                         </div>
                     </div>
                 </div>
