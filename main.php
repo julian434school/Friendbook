@@ -364,8 +364,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                                 </div>
                                 <!-- Geschlecht -->
                                 <div class="form-group">
-                                    <label for="gender">Geschlecht</label>
-                                    <input type="text" name="gender" class="form-control" id="gender" value="" placeholder="Geschlecht (M/F/O)" maxlength="1" required="false" pattern="M|F|O">
+                                    <p>Wähle Geschlecht:</p>
+                                    <input type="radio" id="m" name="sex" value="m">
+                                    <label for="m">Male</label>
+                                    <input type="radio" id="f" name="sex" value="f">
+                                    <label for="f">Female</label>
+                                    <input type="radio" id="o" name="sex" value="o">
+                                    <label for="o">Other</label>
+                                    <!-- <label class="radio"><input type="radio" class="form-control" name="optradio" id="sex" value="M" >M</label>
+                                    <label class="radio"><input type="radio" class="form-control" name="optradio" id="sex" value="F" >F</label>
+                                    <label class="radio"><input type="radio" class="form-control" name="optradio" id="sex" value="O" >O</label> -->
                                 </div>
                                 <!-- Adresse -->
                                 <div class="form-group">
@@ -385,7 +393,35 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                                 <!-- Kanton -->
                                 <div class="form-group">
                                     <label for="canton">Kanton</label>
-                                    <input type="text" name="canton" class="form-control" id="canton" value="" placeholder="Kantons-Abk." maxlength="2" required="false" pattern="[A-Z]{2}">
+                                    <br>
+                                    <select name="canton" id="canton">
+                                        <option value="AG">AG</option>
+                                        <option value="AI">AI</option>
+                                        <option value="AR">AR</option>
+                                        <option value="BE">BE</option>
+                                        <option value="BL">BL</option>
+                                        <option value="BS">BS</option>
+                                        <option value="FR">FR</option>
+                                        <option value="GE">GE</option>
+                                        <option value="GL">GL</option>
+                                        <option value="GR">GR</option>
+                                        <option value="JU">JU</option>
+                                        <option value="LU">LU</option>
+                                        <option value="NE">NE</option>
+                                        <option value="NW">NW</option>
+                                        <option value="OW">OW</option>
+                                        <option value="SG">SG</option>
+                                        <option value="SH">SH</option>
+                                        <option value="SO">SO</option>
+                                        <option value="SZ">SZ</option>
+                                        <option value="TG">TG</option>
+                                        <option value="TI">TI</option>
+                                        <option value="UR">UR</option>
+                                        <option value="VD">VD</option>
+                                        <option value="VS">VS</option>
+                                        <option value="ZG">ZG</option>
+                                        <option value="ZH">ZH</option>
+                                    <!-- <input type="text" name="canton" class="form-control" id="canton" value="" placeholder="Kantons-Abk." maxlength="2" required="false" pattern="[A-Z]{2}"> -->
                                 </div>
                                 <!-- E-Mail -->
                                 <div class="form-group">
