@@ -198,9 +198,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                     <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
                         <!-- Profile Pic -->
                         <div class="text-center">
-                            <!-- <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo"> -->
-                            <h1>[PROFILE PIC]</h1>
-                            <h3>Julian Mathis</h3>
+                            <img class="m-3" src="assets\img\friend_profile_picture.png" alt="Friendbook Logo" width="150px" height="150px">
+                            <!-- <h1>[PROFILE PIC]</h1> -->
+                            <h3 class="m-3">Julian Mathis</h3>
                         </div>
                         <h5>Land: Schweiz</h5>
                         <h5>Canton: Basel</h5>
@@ -208,8 +208,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                         <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
                         <h5>Email: [Email]</h5>
                         <h5>Handy: 076 528 21 82</h5>
-                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
-                        <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
+                        <div class="mt-4 mb-4">
+                            <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
+                            <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
+                        </div>
                     </div>
 
                 </div>
