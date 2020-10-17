@@ -8,7 +8,7 @@ $error = $message =  '';
 $fname = $name = $sex = $street = $plz = $city = $canton = $email = $tel = $profilepic = '';
 
 /*
-TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!!!!!
+TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Tel nur!!!!!
 */
 
 // Wurden Daten mit "POST" gesendet?
@@ -18,20 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
-
-
-
-    // vorname ausgefüllt?
-    if (isset($_POST['fname'])) {
-        //trim and sanitize
-        $fname = trim(htmlspecialchars($_POST['fname']));
-        //mindestens 1 Zeichen und maximal 30 Zeichen lang
-        if (empty($fname) || strlen($fname) > 30) {
-            $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
-        }
-    } else {
-        $error .= "Geben Sie bitte einen Vornamen ein.<br />";
-    }
 
     // nachname ausgefüllt?
     if (isset($_POST['name'])) {
@@ -46,12 +32,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 
 
-    // geschlecht ausgefüllt?
-    if (isset($_POST['gender'])) {
+    // vorname ausgefüllt?
+    if (isset($_POST['fname'])) {
         //trim and sanitize
-        $gender = trim(htmlspecialchars($_POST['gender']));
+        $fname = trim(htmlspecialchars($_POST['fname']));
+        //mindestens 1 Zeichen und maximal 30 Zeichen lang
+        if (empty($fname) || strlen($fname) > 30) {
+            $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
+        }
+    } else {
+        $error .= "Geben Sie bitte einen Vornamen ein.<br />";
+    }
+
+
+    // geschlecht ausgefüllt?
+    if (isset($_POST['sex'])) {
+        //trim and sanitize
+        $sex = trim(htmlspecialchars($_POST['sex']));
         //maximal 1 Zeichen
-        if (empty($gender) || strlen($gender) > 1) {
+        if (empty($sex) || strlen($sex) > 1) {
             $error .= "Geben Sie bitte ein korrektes Geschlecht ein.<br />";
         }
     } else {
@@ -59,11 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 
     // adresse ausgefüllt?
-    if (isset($_POST['address'])) {
+    if (isset($_POST['street'])) {
         //trim and sanitize
-        $address = trim(htmlspecialchars($_POST['address']));
+        $street = trim(htmlspecialchars($_POST['street']));
         //mindestens 1 Zeichen und maximal 50 Zeichen lang
-        if (empty($address) || strlen($address) > 50) {
+        if (empty($street) || strlen($street) > 50) {
             $error .= "Geben Sie bitte eine korrekte Adresse ein.<br />";
         }
     } else {
@@ -119,18 +118,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 
     // telefon ausgefüllt?
-    if (isset($_POST['tele'])) {
+    if (isset($_POST['tel'])) {
         //trim and sanitize
-        $tele = trim($_POST['tele']);
+        $tel = trim($_POST['tel']);
         //mindestens 1 Zeichen , entsprich RegEX
-        if (empty($tele) || strlen($tele) > 10) {
+        if (empty($tel) || strlen($tel) > 10) {
             $error .= "Geben Sie bitte eine korrekte Telefonnummer eine.<br />";
         }
     } else {
         $error .= "Geben Sie bitte eine Telefonnummer ein.<br />";
     }
 
-    if (isset($_POST['pfpUpload'])) {
+    if (isset($_POST['profilepic'])) {
         $filename = 'validatedCustomFile';
         $input = fopen('php://input', 'rb');
         $file = fopen($filename, 'wb');
@@ -148,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($insertStatement);
         // Parameter an Query binden mit bind_param();
-        $stmt->bind_param("ssssissssb", $fname, $name, $gender, $address, $plz, $city, $canton, $email, $tele, $pfpUpload);
+        $stmt->bind_param("ssssissssb", $name, $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic);
         // query ausführen mit execute();
         $stmt->execute();
         // Verbindung schliessen
@@ -156,10 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Weiterleitung auf login.php
         header("Location: main.php");
     }
-}
-
-// Login POST verify
-if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
+    echo "Error: " . $error;
 }
 ?>
 
@@ -351,17 +347,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                         </div>
                         <div class="modal-body">
                             <!-- Freund Hinzufügen -->
-                            <form action="" method="post">
+                            <form action="main.php" method="post">
                                 <!-- Vorname -->
                                 <div class="form-group">
                                     <label for="fname">Vorname *</label>
-                                    <input type="text" name="fname" class="form-control" id="fname" value="" placeholder="Vorname" maxlength="30" required="true">
+                                    <input type="text" name="fname" class="form-control" id="fname" value="<?php echo $fname ?>" placeholder="Vorname" maxlength="30" required="true">
                                 </div>
                                 <!-- Nachname -->
                                 <div class="form-group">
                                     <label for="name">Nachname *</label>
-                                    <input type="text" name="name" class="form-control" id="name" value="" placeholder="Name" maxlength="30" required="true">
+                                    <input type="text" name="name" class="form-control" id="name" value="<?php echo $name ?>" placeholder="Name" maxlength="30" required="true">
                                 </div>
+
+                                <!-- Geschlecht 
+                                <div class="form-group">
+                                    <label for="sex">Geschlecht</label>
+                                    <input type="text" name="sex" class="form-control" id="sex" value="<?php echo $sex ?>" placeholder="Geschlecht (M/F/O)" maxlength="1" required="false" pattern="M|F|O">
+                                </div>
+                                -->
+
                                 <!-- Geschlecht -->
                                 <div class="form-group">
                                     <p>Wähle Geschlecht:</p>
@@ -377,24 +381,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                                 </div>
                                 <!-- Adresse -->
                                 <div class="form-group">
-                                    <label for="address">Strasse, Hausnr.</label>
-                                    <input type="text" name="address" class="form-control" id="address" value="" placeholder="Adresse" maxlength="50" required="false">
+                                    <label for="street">Strasse, Hausnr.</label>
+                                    <input type="text" name="street" class="form-control" id="street" value="<?php echo $street ?>" placeholder="Adresse" maxlength="50" required="false">
                                 </div>
                                 <!-- PLZ -->
                                 <div class="form-group">
                                     <label for="plz">PLZ</label>
-                                    <input type="number" name="plz" class="form-control" id="plz" value="" placeholder="Postleitzahl" maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
+                                    <input type="number" name="plz" class="form-control" id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl" maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
                                 </div>
                                 <!-- Ort -->
                                 <div class="form-group">
                                     <label for="city">Ort</label>
-                                    <input type="text" name="city" class="form-control" id="city" value="" placeholder="Stadt, Gemeinde, Dorf" maxlength="30" required="false">
+                                    <input type="text" name="city" class="form-control" id="city" value="<?php echo $city ?>" placeholder="Stadt, Gemeinde, Dorf" maxlength="30" required="false">
                                 </div>
+
                                 <!-- Kanton -->
                                 <div class="form-group">
                                     <label for="canton">Kanton</label>
-                                    <br>
-                                    <select name="canton" id="canton">
+                                    <select class="browser-default custom-select">
                                         <option value="AG">AG</option>
                                         <option value="AI">AI</option>
                                         <option value="AR">AR</option>
@@ -421,23 +425,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                                         <option value="VS">VS</option>
                                         <option value="ZG">ZG</option>
                                         <option value="ZH">ZH</option>
-                                    <!-- <input type="text" name="canton" class="form-control" id="canton" value="" placeholder="Kantons-Abk." maxlength="2" required="false" pattern="[A-Z]{2}"> -->
+                                    </select>
                                 </div>
+
                                 <!-- E-Mail -->
                                 <div class="form-group">
                                     <label for="email">E-Mail</label>
-                                    <input type="email" name="email" class="form-control" id="email" value="" placeholder="E-Mail" maxlength="100" required="false">
+                                    <input type="email" name="email" class="form-control" id="email" value="<?php echo $email ?>" placeholder="E-Mail" maxlength="100" required="false">
                                 </div>
+
                                 <!-- Telefonnummer -->
                                 <div class="form-group">
-                                    <label for="tele">Telefon</label>
-                                    <input type="text" name="tele" class="form-control" id="tele" value="" placeholder="Telefon-Format: '0612345678'" minlength="9" maxlength="13" required="false" pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
+                                    <label for="tel">Telefon</label>
+                                    <input type="text" name="tel" class="form-control" id="tel" value="<?php echo $tel ?>" placeholder="Telefon-Format: '0612345678'" minlength="9" maxlength="13" required="false" pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
                                 </div>
 
                                 <!-- Profile Picture Upload -->
-                                <label for="pfpUpload">Profilfoto</label>
+                                <label for="profilepic">Profilfoto</label>
                                 <div class="custom-file">
-                                    <input type="file" name="pfpUpload" class="custom-file-input" id="validatedCustomFile">
+                                    <input type="file" name="profilepic" class="custom-file-input" id="validatedCustomFile" value="<?php echo $profilepic ?>">
                                     <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
                                     <div class="invalid-feedback">Example invalid custom file feedback</div>
                                 </div>
