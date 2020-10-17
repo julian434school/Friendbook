@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+session_regenerate_id(true);
+
 //Datenbankverbindung
 include('dbconnector.inc.php');
 
@@ -84,13 +87,60 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
   }
 }
 
+
+
 // Login POST verify
-if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
+	// username
+	if(isset($_POST['email'])){
+		//trim
+		$email = trim($_POST['email']);
+		
+	// prüfung benutzername
+	if(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		$error .= "Die E-Mail entspricht nicht dem geforderten Format.<br />";
+	} else {
+		$error .= "Geben Sie bitte die E-Mail an.<br />";
+	}
+	// password
+	if(isset($_POST['password'])){
+		//trim
+		$password = trim($_POST['password']);
+		// passwort gültig?
+		if(empty($password) || !preg_match("/(?=^.{8,255}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/", $password)){
+			$error .= "Das Passwort entspricht nicht dem geforderten Format.<br />";
+		}
+	} else {
+		$error .= "Geben Sie bitte das Passwort an.<br />";
+	}
+	
+	// kein fehler
+	if(empty($error)){
+
+		$query = "SELECT * FROM users WHERE email=?";
+		$stmt = $mysqli->prepare($query);
+		$stmt->bind_param("s", $email);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		if($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) { 
+				if(password_verify($password, $row['password'])) { 
+				  $_SESSION["email"] = $email;
+					header("Location: main.php");
+					die();
+        } else { 
+          $error .= "Benutzername oder Passwort sind falsch"; 
+				  }
+			  }
+      }
+      $stmt->close();
+    }
+  }
 }
-
-//
 ?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -132,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
           <!-- Hero Register Button -->
           <div class="form-row justify-content-center align-items-center">
             <div class="col-12 col-md-3">
-              <button type="button" class="btn btn-primary btn-block btn-lg" style="text-align: center;" data-toggle="modal" data-target="#registerModal">Registrieren
+              <button type="button" class="btn btn-success btn-primary btn-block btn-lg" style="text-align: center;" data-toggle="modal" data-target="#registerModal">Registrieren
               </button>
             </div>
 
@@ -215,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                       <!-- benutzername -->
                       <div class="form-group">
                         <input type="text" name="email" class="form-control"
-                        id="email" value="<?php echo $email ?>" placeholder="Email"
+                        id="email" value="" placeholder="Email"
                         title="Email" maxlength="30" required="true">
                       </div>
                       <!-- password -->
@@ -228,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                   </div>
                   <div class="modal-footer">
                     <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Anmelden</button>
+                    <button type="submit" class="btn btn-primary" value="submit">Anmelden</button>
                   </div>
                   </form>
                 </div>

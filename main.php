@@ -5,7 +5,7 @@ include('dbconnector.inc.php');
 
 // Initialisierung
 $error = $message =  '';
-$fname = $name = $gender = $address = $plz = $city = $canton = $email = $tele = $pfp = '';
+$fname = $name = $gender = $address = $plz = $city = $canton = $email = $tele = $pfpUpload = '';
 
 /*
 TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!!!!!
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
     // vorname ausgefüllt?
     if (isset($_POST['fname'])) {
         //trim and sanitize
-        $firstname = trim(htmlspecialchars($_POST['fname']));
+        $fname = trim(htmlspecialchars($_POST['fname']));
         //mindestens 1 Zeichen und maximal 30 Zeichen lang
         if (empty($fname) || strlen($fname) > 30) {
             $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
     // adresse ausgefüllt?
     if (isset($_POST['address'])) {
         //trim and sanitize
-        $plz = trim(htmlspecialchars($_POST['address']));
+        $address = trim(htmlspecialchars($_POST['address']));
         //mindestens 1 Zeichen und maximal 50 Zeichen lang
         if (empty($address) || strlen($address) > 50) {
             $error .= "Geben Sie bitte eine korrekte Adresse ein.<br />";
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
     // plz ausgefüllt? +++braucht noch !preg_match+++
     if (isset($_POST['plz'])) {
         //trim and sanitize
-        $firstname = trim(htmlspecialchars($_POST['plz']));
+        $plz = trim(htmlspecialchars($_POST['plz']));
         //mindestens 1 Zeichen und maximal 30 Zeichen lang
         if (empty($plz) || strlen($plz) > 4) {
             $error .= "Geben Sie bitte eine korrekte Postleitzahl ein.<br />";
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
     // canton ausgefüllt +++braucht noch !preg_match+++
     if (isset($_POST['canton'])) {
         //trim and sanitize
-        $password = trim($_POST['canton']);
+        $canton = trim($_POST['canton']);
         //immer 2 Zeichen
         if (empty($canton) || strlen($canton) > 2) {
             $error .= "Geben Sie bitte einen korrekten Kanton an.<br />";
@@ -129,16 +129,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
         $error .= "Geben Sie bitte eine Telefonnummer ein.<br />";
     }
 
+    if(isset($_POST['pfpUpload'])) {
+        $filename = 'validatedCustomFile';
+        $input = fopen('php://input', 'rb');
+        $file = fopen($filename, 'wb');
+        stream_copy_to_stream($input, $file);
+        fclose($input);
+        fclose($file);
+    }
+
     // TODO, steht noch unter Bearbeitung
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if (empty($error)) {
         // INPUT Query erstellen, welches firstname, lastname, password, email in die Datenbank schreibt
-        $insertStatement = "INSERT into users(fname, name, pword, email) VALUES (?, ?, ?, ?)";
+        $insertStatement = "INSERT into users(fname, name, gender, address, plz, city, canton, email, tele, pfpUpload) VALUES (?,?,?,?,?,?,?,?,?,?)";
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($insertStatement);
         // Parameter an Query binden mit bind_param();
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt->bind_param("ssss", $firstname, $lastname, $password, $email);
+        $stmt->bind_param("ssssissssb", $fname, $name, $gender, $address, $plz, $city, $canton, $email, $tele, $pfpUpload);
         // query ausführen mit execute();
         $stmt->execute();
         // Verbindung schliessen
@@ -261,7 +270,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                 </div>
 
             </div>
-
 
             <div class="row mt-5 mb-5">
                 <div class="col-lg-4">
@@ -398,13 +406,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
                                 </div>
 
                                 <!-- TODO - Button to submit info -->
-
                             </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success" value="submit">Freund hinzufügen</button>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </header>
     <footer class="footer bg-light">
