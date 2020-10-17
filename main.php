@@ -11,25 +11,25 @@ $fname = $name = $gender = $address = $plz = $city = $canton = $email = $tele = 
 TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!!!!!
 */
 
-    // Wurden Daten mit "POST" gesendet?
-    if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
-      // Ausgabe des gesamten $_POST Arrays
-      echo "<pre>";
-      print_r($_POST);
-      echo "</pre>";
+// Wurden Daten mit "POST" gesendet?
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
+    // Ausgabe des gesamten $_POST Arrays
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
 
 
 
     // vorname ausgefüllt?
     if (isset($_POST['fname'])) {
         //trim and sanitize
-        $firstname = trim(htmlspecialchars($_POST['fname']));   
+        $firstname = trim(htmlspecialchars($_POST['fname']));
         //mindestens 1 Zeichen und maximal 30 Zeichen lang
         if (empty($fname) || strlen($fname) > 30) {
             $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
         }
     } else {
-      $error .= "Geben Sie bitte einen Vornamen ein.<br />";
+        $error .= "Geben Sie bitte einen Vornamen ein.<br />";
     }
 
     // nachname ausgefüllt?
@@ -41,7 +41,7 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
             $error .= "Geben Sie bitte einen korrekten Nachname ein.<br />";
         }
     } else {
-      $error .= "Geben Sie bitte einen Nachname ein.<br />";
+        $error .= "Geben Sie bitte einen Nachname ein.<br />";
     }
 
 
@@ -54,7 +54,7 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
             $error .= "Geben Sie bitte ein korrektes Geschlecht ein.<br />";
         }
     } else {
-      $error .= "Geben Sie bitte einen Geschlecht ein.<br />";
+        $error .= "Geben Sie bitte einen Geschlecht ein.<br />";
     }
 
     // adresse ausgefüllt?
@@ -66,7 +66,7 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
             $error .= "Geben Sie bitte eine korrekte Adresse ein.<br />";
         }
     } else {
-      $error .= "Geben Sie bitte einen Adresse ein.<br />";
+        $error .= "Geben Sie bitte einen Adresse ein.<br />";
     }
 
     // plz ausgefüllt? +++braucht noch !preg_match+++
@@ -78,7 +78,7 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
             $error .= "Geben Sie bitte eine korrekte Postleitzahl ein.<br />";
         }
     } else {
-      $error .= "Geben Sie bitte einen Postleitzahl ein.<br />";
+        $error .= "Geben Sie bitte einen Postleitzahl ein.<br />";
     }
 
     // city ausgefüllt?
@@ -90,7 +90,7 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
             $error .= "Geben Sie bitte eine korrekte Stadt an.<br />";
         }
     } else {
-      $error .= "Geben Sie bitte eine Stadt an.<br />";
+        $error .= "Geben Sie bitte eine Stadt an.<br />";
     }
 
     // canton ausgefüllt +++braucht noch !preg_match+++
@@ -114,7 +114,7 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
             $error .= "Geben Sie bitte eine korrekten Emailadresse ein.<br />";
         }
     } else {
-      $error .= "Geben Sie bitte eine Emailadresse ein.<br />";
+        $error .= "Geben Sie bitte eine Emailadresse ein.<br />";
     }
 
     // telefon ausgefüllt?
@@ -132,26 +132,25 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
     // TODO, steht noch unter Bearbeitung
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if (empty($error)) {
-      // INPUT Query erstellen, welches firstname, lastname, password, email in die Datenbank schreibt
-      $insertStatement = "INSERT into users(fname, name, pword, email) VALUES (?, ?, ?, ?)";
-      // Query vorbereiten mit prepare();
-      $stmt = $mysqli->prepare($insertStatement);
-      // Parameter an Query binden mit bind_param();
-      $password = password_hash($password, PASSWORD_DEFAULT);
-      $stmt->bind_param("ssss", $firstname, $lastname, $password, $email);
-      // query ausführen mit execute();
-      $stmt->execute();
-      // Verbindung schliessen
-      $stmt->close();
-      // Weiterleitung auf login.php
-      header("Location: main.php");
-      }
+        // INPUT Query erstellen, welches firstname, lastname, password, email in die Datenbank schreibt
+        $insertStatement = "INSERT into users(fname, name, pword, email) VALUES (?, ?, ?, ?)";
+        // Query vorbereiten mit prepare();
+        $stmt = $mysqli->prepare($insertStatement);
+        // Parameter an Query binden mit bind_param();
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $stmt->bind_param("ssss", $firstname, $lastname, $password, $email);
+        // query ausführen mit execute();
+        $stmt->execute();
+        // Verbindung schliessen
+        $stmt->close();
+        // Weiterleitung auf login.php
+        header("Location: main.php");
     }
+}
 
-    // Login POST verify
-    if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
-
-    }
+// Login POST verify
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname) == false) {
+}
 ?>
 
 <!DOCTYPE html>
@@ -175,7 +174,7 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
             </a>
             <div class="collapse navbar-collapse" id="navcol-1">
 
-            <!-- Search Friend -->
+                <!-- Search Friend -->
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search a friend" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -330,7 +329,7 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
             </div>
 
             <!-- Add Friend Modal -->
-            <div class="modal fade" id=addFModal tabindex="-1" role="dialog" aria-labelledby="addFModalLabel" aria-hidden="true">
+            <div class="modal fade" id=addFModal tabindex="-1" role="dialog" aria-labelledby="addFModalLabel" aria-hidden="true" style="color: #000">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -345,67 +344,59 @@ TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Nachname nur!
                                 <!-- Vorname -->
                                 <div class="form-group">
                                     <label for="fname">Vorname *</label>
-                                    <input type="text" name="fname" class="form-control"
-                                    id="fname" value="<?php echo $fname ?>" placeholder="Vorname"
-                                    maxlength="30" required="true">
+                                    <input type="text" name="fname" class="form-control" id="fname" value="<?php echo $fname ?>" placeholder="Vorname" maxlength="30" required="true">
                                 </div>
                                 <!-- Nachname -->
                                 <div class="form-group">
                                     <label for="name">Nachname *</label>
-                                    <input type="text" name="name" class="form-control"
-                                    id="name" value="<?php echo $name ?>" placeholder="Name"
-                                    maxlength="30" required="true">
+                                    <input type="text" name="name" class="form-control" id="name" value="<?php echo $name ?>" placeholder="Name" maxlength="30" required="true">
                                 </div>
                                 <!-- Geschlecht -->
                                 <div class="form-group">
                                     <label for="gender">Geschlecht</label>
-                                    <input type="text" name="gender" class="form-control"
-                                    id="gender" value="<?php echo $gender ?>" placeholder="Geschlecht (M/F/O)"
-                                    maxlength="1" required="false" pattern="M|F|O">
+                                    <input type="text" name="gender" class="form-control" id="gender" value="<?php echo $gender ?>" placeholder="Geschlecht (M/F/O)" maxlength="1" required="false" pattern="M|F|O">
                                 </div>
                                 <!-- Adresse -->
                                 <div class="form-group">
                                     <label for="address">Strasse, Hausnr.</label>
-                                    <input type="text" name="address" class="form-control"
-                                    id="address" value="<?php echo $address ?>" placeholder="Adresse"
-                                    maxlength="50" required="false">
+                                    <input type="text" name="address" class="form-control" id="address" value="<?php echo $address ?>" placeholder="Adresse" maxlength="50" required="false">
                                 </div>
                                 <!-- PLZ -->
                                 <div class="form-group">
                                     <label for="plz">PLZ</label>
-                                    <input type="number" name="plz" class="form-control"
-                                    id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl"
-                                    maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
+                                    <input type="number" name="plz" class="form-control" id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl" maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
                                 </div>
                                 <!-- Ort -->
                                 <div class="form-group">
                                     <label for="city">Ort</label>
-                                    <input type="text" name="city" class="form-control"
-                                    id="city" value="<?php echo $city ?>" placeholder="Stadt, Gemeinde, Dorf"
-                                    maxlength="30" required="false">
+                                    <input type="text" name="city" class="form-control" id="city" value="<?php echo $city ?>" placeholder="Stadt, Gemeinde, Dorf" maxlength="30" required="false">
                                 </div>
                                 <!-- Kanton -->
                                 <div class="form-group">
                                     <label for="canton">Kanton</label>
-                                    <input type="text" name="canton" class="form-control"
-                                    id="canton" value="<?php echo $canton ?>" placeholder="Kantons-Abk."
-                                    maxlength="2" required="false" pattern="[A-Z]{2}">
+                                    <input type="text" name="canton" class="form-control" id="canton" value="<?php echo $canton ?>" placeholder="Kantons-Abk." maxlength="2" required="false" pattern="[A-Z]{2}">
                                 </div>
                                 <!-- E-Mail -->
                                 <div class="form-group">
                                     <label for="email">E-Mail</label>
-                                    <input type="email" name="email" class="form-control"
-                                    id="email" value="<?php echo $email ?>" placeholder="E-Mail"
-                                    maxlength="100" required="false">
+                                    <input type="email" name="email" class="form-control" id="email" value="<?php echo $email ?>" placeholder="E-Mail" maxlength="100" required="false">
                                 </div>
                                 <!-- Telefonnummer -->
                                 <div class="form-group">
                                     <label for="tele">Telefon</label>
-                                    <input type="text" name="tele" class="form-control"
-                                    id="tele" value="<?php echo $tele ?>" placeholder="Telefon-Format: '0612345678'"
-                                    minlength="9" maxlength="13" required="false"
-                                    pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
+                                    <input type="text" name="tele" class="form-control" id="tele" value="<?php echo $tele ?>" placeholder="Telefon-Format: '0612345678'" minlength="9" maxlength="13" required="false" pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
                                 </div>
+
+                                <!-- TODO DOESNT WORK YET - Profile Picture Upload -->
+                                <label for="pfpUpload">Profilfoto</label>
+                                <div class="custom-file">
+                                    <input type="file" name="pfpUpload" class="custom-file-input" id="validatedCustomFile" required>
+                                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                </div>
+
+                                <!-- TODO - Button to submit info -->
+
                             </form>
                         </div>
                     </div>
