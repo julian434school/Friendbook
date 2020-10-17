@@ -10,10 +10,12 @@ include('dbconnector.inc.php');
 $error = $message =  '';
 $firstname = $lastname = $email = '';
 
-// Wurden Daten mit "POST" gesendet?
-if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
+// Register Server POST verify
+if ($_SERVER['REQUEST_METHOD'] == "POST" && strcmp($firstname, "Array") == 0) {
   // Ausgabe des gesamten $_POST Arrays
   echo "<pre>";
+  echo "FOR DEBUGGING, REGISTER";
+  echo "Firstname: " . $firstname;
   print_r($_POST);
   echo "</pre>";
 
@@ -89,53 +91,55 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($firstname)) {
 
 
 
-// Login POST verify
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
+// Login Server POST verify
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-	// username
-	if(isset($_POST['email'])){
-		//trim
-		$email = trim($_POST['email']);
-		
-	// prüfung benutzername
-	if(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-		$error .= "Die E-Mail entspricht nicht dem geforderten Format.<br />";
-	} else {
-		$error .= "Geben Sie bitte die E-Mail an.<br />";
-	}
-	// password
-	if(isset($_POST['password'])){
-		//trim
-		$password = trim($_POST['password']);
-		// passwort gültig?
-		if(empty($password) || !preg_match("/(?=^.{8,255}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/", $password)){
-			$error .= "Das Passwort entspricht nicht dem geforderten Format.<br />";
-		}
-	} else {
-		$error .= "Geben Sie bitte das Passwort an.<br />";
-	}
-	
-	// kein fehler
-	if(empty($error)){
+  // email
+  if (isset($_POST['email'])) {
 
-		$query = "SELECT * FROM users WHERE email=?";
-		$stmt = $mysqli->prepare($query);
-		$stmt->bind_param("s", $email);
-		$stmt->execute();
-		$result = $stmt->get_result();
-		if($result->num_rows > 0) {
-			while($row = $result->fetch_assoc()) { 
-				if(password_verify($password, $row['password'])) { 
-				  $_SESSION["email"] = $email;
-					header("Location: main.php");
-					die();
-        } else { 
-          $error .= "Benutzername oder Passwort sind falsch"; 
-				  }
-			  }
-      }
-      $stmt->close();
+    //trim
+    $email = trim($_POST['email']);
+
+    // prüfung email
+    if (empty($email)) {
+      $error .= "Die E-Mail entspricht nicht dem geforderten Format.<br />";
     }
+  } else {
+    $error .= "Geben Sie bitte die E-Mail an.<br />";
+  }
+
+
+  // password
+  if (isset($_POST['password'])) {
+    //trim
+    $password = trim($_POST['password']);
+    // passwort gültig?
+    if (empty($password) || !preg_match("/(?=^.{8,255}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/", $password)) {
+      $error .= "Das Passwort entspricht nicht dem geforderten Format.<br />";
+    }
+  } else {
+    $error .= "Geben Sie bitte das Passwort an.<br />";
+  }
+
+  // kein fehler
+  if (empty($error)) {
+    $query = "SELECT * FROM users WHERE email=?";
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+      while ($row = $result->fetch_assoc()) {
+        if (password_verify($password, $row['pword'])) {
+          // $_SESSION["email"] = $email;
+          header("Location: main.php");
+          //die();
+        } else {
+          $error .= "Benutzername oder Passwort sind falsch";
+        }
+      }
+    }
+    $stmt->close();
   }
 }
 ?>
@@ -169,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       </div>
     </div>
   </nav>
-  
+
   <header class="masthead text-white text-center" style="background:url('assets/img/bg-masthead.jpg')no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
     <div class="container">
@@ -208,32 +212,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                       <!-- Vorname -->
                       <div class="form-group">
                         <label for="firstname">Vorname *</label>
-                        <input type="text" name="firstname" class="form-control"
-                        id="firstname" value="<?php echo $firstname ?>" placeholder="Vorname"
-                        maxlength="30" required="true">
+                        <input type="text" name="firstname" class="form-control" id="firstname" value="<?php echo $firstname ?>" placeholder="Vorname" maxlength="30" required="true">
                       </div>
                       <!-- Nachname -->
                       <div class="form-group">
                         <label for="lastname">Nachname *</label>
-                        <input type="text" name="lastname" class="form-control"
-                        id="lastname" value="<?php echo $lastname ?>" placeholder="Nachnamen"
-                        maxlength="30" required="true">
+                        <input type="text" name="lastname" class="form-control" id="lastname" value="<?php echo $lastname ?>" placeholder="Nachnamen" maxlength="30" required="true">
                       </div>
                       <!-- Email -->
                       <div class="form-group">
                         <label for="lastname">Email *</label>
-                        <input type="email" name="email" class="form-control"
-                        id="email" value="<?php echo $email ?>" placeholder="Email"
-                        maxlength="80" required="true">
+                        <input type="email" name="email" class="form-control" id="email" value="<?php echo $email ?>" placeholder="Email" maxlength="80" required="true">
                       </div>
                       <!-- Password -->
                       <div class="form-group">
                         <label for="lastname">Passwort *</label>
-                        <input type="password" name="password" class="form-control"
-                        id="password" placeholder="Passwort"
-                        pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-                        title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute."
-                        maxlength="255" required="true">
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Passwort" pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute." maxlength="255" required="true">
                         <p style="color:darkgray">
                           *Gross- und Kleinbuchstaben, Zahlen, Sonderzeichen, min. 8 Zeichen, keine Umlaute
                         </p>
@@ -262,17 +256,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <!-- Login -->
                     <form action="" method="post">
-                      <!-- benutzername -->
+
+                      <!-- Email -->
                       <div class="form-group">
-                        <input type="text" name="email" class="form-control"
-                        id="email" value="" placeholder="Email"
-                        title="Email" maxlength="30" required="true">
+                        <input type="text" name="email" class="form-control" id="email" value="" placeholder="Email" title="Email" maxlength="50" required="true">
                       </div>
+
                       <!-- password -->
                       <div class="form-group">
-                        <input type="password" name="password" class="form-control"
-                        id="password" placeholder="Passwort" title="Passwort"
-                        maxlength="255" required="true">
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Passwort" title="Passwort" maxlength="255" required="true">
                       </div>
 
                   </div>
@@ -284,8 +276,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
               </div>
             </div>
-
-            <div class="clearfix"></div>
           </div>
         </div>
       </div>
