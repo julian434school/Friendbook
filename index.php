@@ -254,7 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && strcmp($firstname, "") == 0) {
 
                       <!-- Email -->
                       <div class="form-group">
-                        <input type="text" name="email" class="form-control" id="email" value="" placeholder="Email" title="Email" maxlength="50" required="true">
+                        <input type="email" name="email" class="form-control" id="email" value="" placeholder="Email" title="Email" maxlength="50" required="true">
                       </div>
 
                       <!-- password -->

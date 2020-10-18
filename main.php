@@ -30,9 +30,9 @@ print_r($sessionData);
 
 foreach ($sessionData as $key => $value) {
     echo " " . $key . " ";
-    if($key == "uid") {
+    if ($key == "uid") {
         $session_user_id = $value;
-    break;
+        break;
     }
 }
 
@@ -122,15 +122,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $canton = "BS";
     // canton ausgefüllt +++braucht noch !preg_match+++
     //if (isset($_POST['canton'])) {
-        //trim and sanitize
-        //$canton = trim($_POST['canton']);
-        //immer 2 Zeichen
-        //if (empty($canton) || strlen($canton) > 2) {
-           // $error .= "Geben Sie bitte einen korrekten Kanton an.<br />";
-        //}
+    //trim and sanitize
+    //$canton = trim($_POST['canton']);
+    //immer 2 Zeichen
+    //if (empty($canton) || strlen($canton) > 2) {
+    // $error .= "Geben Sie bitte einen korrekten Kanton an.<br />";
+    //}
     //} else {
-        //$error .= "Geben Sie bitte einen Kanton an.<br />";
-   // }
+    //$error .= "Geben Sie bitte einen Kanton an.<br />";
+    // }
 
     // email ausgefüllt?
     if (isset($_POST['email'])) {
@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if (empty($error)) {
-        
+
         // INPUT Query erstellen, welches firstname, lastname, password, email in die Datenbank schreibt
         $insertStatement = "INSERT into friend(name, fname, sex, street, city, plz, canton, tel, email, profilepic, friend_of_user) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         // Query vorbereiten mit prepare();
@@ -225,33 +225,79 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <div class="container">
             <h1>Freunde</h1>
 
+            <?php
+            $selectStatement = "SELECT * FROM friend WHERE friend_of_user=?";
 
+            $stmt = $mysqli->prepare($selectStatement);
+            $stmt->bind_param("i", $session_user_id);
+            $stmt->execute();
+            $result = $stmt->get_result(); // get the mysqli result
+            $resultArray = $result->fetch_assoc(); // fetch data   
+            ?>
 
             <div class="row mt-5 mb-5">
-                <div class="col-lg-4">
 
-                    <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
+                <?php
+                foreach ($result as $row) : ?>
+
+                    <!-- Column -->
+                    <div class="col-lg-4">
                         <!-- Profile Pic -->
                         <div class="text-center">
                             <img class="m-3" src="assets\img\friend_profile_picture.png" alt="Friendbook Logo" width="150px" height="150px">
-                            <!-- <h1>[PROFILE PIC]</h1> -->
-                            <h3 class="m-3">Julian Mathis</h3>
+                            <!-- <h3 class="m-3">Julian Mathis</h3> -->
                         </div>
-                        <h5>Land: Schweiz</h5>
-                        <h5>Canton: Basel</h5>
-                        <h5>Gender: Chad</h5>
-                        <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
-                        <h5>Email: [Email]</h5>
-                        <h5>Handy: 076 528 21 82</h5>
+                        <div>
+                            <?php foreach ($row as $key => $col) : ?>
+                                <h5>
+                                    <?php
+                                    // Skip attributes like f_id 
+                                    if ($key == "f_id" || $key == "profilepic" || $key == "friend_of_user") {
+                                        continue;
+                                    }
+                                    switch ($key) {
+                                        case "name":
+                                            $key = "Name: ";
+                                            break;
+                                        case "fname":
+                                            $key = "Vorname: ";
+                                            break;
+                                        case "sex":
+                                            $key = "Geschlecht: ";
+                                            break;
+                                        case "city":
+                                            $key = "Stadt: ";
+                                            break;
+                                        case "street":
+                                            $key = "Strasse: ";
+                                            break;
+                                        case "plz":
+                                            $key = "PLZ: ";
+                                            break;
+                                        case "canton":
+                                            $key = "Kanton: ";
+                                            break;
+                                        case "tel":
+                                            $key = "Telefon: ";
+                                            break;
+                                        case "email":
+                                            $key = "Email: ";
+                                            break;
+                                    }
+                                    echo $key;
+                                    echo $col;
+                                    ?>
+                                </h5>
+                            <?php endforeach; ?>
+                            <br>
+
+                        </div>
                         <div class="mt-4 mb-4">
                             <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
                             <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
                         </div>
                     </div>
-
-                </div>
-
-
+                    <?php endforeach; ?>
             </div>
 
             <!-- Add Friend Modal -->
