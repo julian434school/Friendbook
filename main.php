@@ -20,22 +20,26 @@ if (isset($_SESSION['loggedin']) && isset($_SESSION['email'])) {
 
 $selectStatement = "SELECT * FROM users WHERE email=?";
 
-// $sql = "SELECT * FROM users WHERE id=?"; // SQL with parameters
-$stmt = $mysqli->prepare($selectStatement); 
+$stmt = $mysqli->prepare($selectStatement);
 $stmt->bind_param("s", $_SESSION['email']);
 $stmt->execute();
 $result = $stmt->get_result(); // get the mysqli result
-$uid = $result->fetch_assoc(); // fetch data   
-$_SESSION['uid'] = $uid; 
+$sessionData = $result->fetch_assoc(); // fetch data   
 
+print_r($sessionData);
 
+foreach ($sessionData as $key => $value) {
+    echo " " . $key . " ";
+    if($key == "uid") {
+        $session_user_id = $value;
+    break;
+    }
+}
 
-
-print_r($_SESSION);
 
 // Wurden Daten mit "POST" gesendet?
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    echo "Test 2";
+
     // Ausgabe des gesamten $_POST Arrays
     echo "<pre>";
     print_r($_POST);
@@ -115,17 +119,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $error .= "Geben Sie bitte eine Stadt an.<br />";
     }
 
+    $canton = "BS";
     // canton ausgefüllt +++braucht noch !preg_match+++
-    if (isset($_POST['canton'])) {
+    //if (isset($_POST['canton'])) {
         //trim and sanitize
-        $canton = trim($_POST['canton']);
+        //$canton = trim($_POST['canton']);
         //immer 2 Zeichen
-        if (empty($canton) || strlen($canton) > 2) {
-            $error .= "Geben Sie bitte einen korrekten Kanton an.<br />";
-        }
-    } else {
-        $error .= "Geben Sie bitte einen Kanton an.<br />";
-    }
+        //if (empty($canton) || strlen($canton) > 2) {
+           // $error .= "Geben Sie bitte einen korrekten Kanton an.<br />";
+        //}
+    //} else {
+        //$error .= "Geben Sie bitte einen Kanton an.<br />";
+   // }
 
     // email ausgefüllt?
     if (isset($_POST['email'])) {
@@ -160,16 +165,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         fclose($file);
     }
 
-
-    // TODO, steht noch unter Bearbeitung
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if (empty($error)) {
+        
         // INPUT Query erstellen, welches firstname, lastname, password, email in die Datenbank schreibt
-        $insertStatement = "INSERT into friend(name, fname, sex, street, city, plz, canton, tel, email, profilepic) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $insertStatement = "INSERT into friend(name, fname, sex, street, city, plz, canton, tel, email, profilepic, friend_of_user) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($insertStatement);
         // Parameter an Query binden mit bind_param();
-        $stmt->bind_param("ssssissssb", $name, $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic);
+        $stmt->bind_param("ssssissssbi", $name, $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic, $session_user_id);
         // query ausführen mit execute();
         $stmt->execute();
         // Verbindung schliessen
@@ -177,7 +181,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Weiterleitung auf login.php
         header("Location: main.php");
     }
-    echo "Error: " . $error;
 }
 ?>
 
@@ -222,6 +225,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <div class="container">
             <h1>Freunde</h1>
 
+
+
             <div class="row mt-5 mb-5">
                 <div class="col-lg-4">
 
@@ -246,117 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 </div>
 
-                <div class="col-lg-4">
 
-                    <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-                        <!-- Profile Pic -->
-                        <div>
-                            <!-- <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo"> -->
-                            <h1>[PROFILE PIC]</h1>
-                        </div>
-                        <h3>Julian Mathis</h3>
-                        <h5>Land: Schweiz</h5>
-                        <h5>Canton: Basel</h5>
-                        <h5>Gender: Chad</h5>
-                        <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
-                        <h5>Email: [Email]</h5>
-                        <h5>Handy: 076 528 21 82</h5>
-                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
-                        <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
-
-                    </div>
-
-                </div>
-
-                <div class="col-lg-4">
-
-                    <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-                        <!-- Profile Pic -->
-                        <div>
-                            <!-- <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo"> -->
-                            <h1>[PROFILE PIC]</h1>
-                        </div>
-                        <h3>Julian Mathis</h3>
-                        <h5>Land: Schweiz</h5>
-                        <h5>Canton: Basel</h5>
-                        <h5>Gender: Chad</h5>
-                        <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
-                        <h5>Email: [Email]</h5>
-                        <h5>Handy: 076 528 21 82</h5>
-                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
-                        <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="row mt-5 mb-5">
-                <div class="col-lg-4">
-
-                    <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-                        <!-- Profile Pic -->
-                        <div>
-                            <!-- <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo"> -->
-                            <h1>[PROFILE PIC]</h1>
-                        </div>
-                        <h3>Julian Mathis</h3>
-                        <h5>Land: Schweiz</h5>
-                        <h5>Canton: Basel</h5>
-                        <h5>Gender: Chad</h5>
-                        <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
-                        <h5>Email: [Email]</h5>
-                        <h5>Handy: 076 528 21 82</h5>
-                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
-
-                        <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
-
-                    </div>
-
-                </div>
-
-                <div class="col-lg-4">
-
-                    <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-                        <!-- Profile Pic -->
-                        <div>
-                            <!-- <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo"> -->
-                            <h1>[PROFILE PIC]</h1>
-                        </div>
-                        <h3>Julian Mathis</h3>
-                        <h5>Land: Schweiz</h5>
-                        <h5>Canton: Basel</h5>
-                        <h5>Gender: Chad</h5>
-                        <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
-                        <h5>Email: [Email]</h5>
-                        <h5>Handy: 076 528 21 82</h5>
-                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
-                        <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
-
-                    </div>
-
-                </div>
-
-                <div class="col-lg-4">
-
-                    <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-                        <!-- Profile Pic -->
-                        <div>
-                            <!-- <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo"> -->
-                            <h1>[PROFILE PIC]</h1>
-                        </div>
-                        <h3>Julian Mathis</h3>
-                        <h5>Land: Schweiz</h5>
-                        <h5>Canton: Basel</h5>
-                        <h5>Gender: Chad</h5>
-                        <h5>Adresse: Adresse [+housenum], PLZ, Ort</h5>
-                        <h5>Email: [Email]</h5>
-                        <h5>Handy: 076 528 21 82</h5>
-                        <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
-                        <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
-                    </div>
-                </div>
             </div>
 
             <!-- Add Friend Modal -->
@@ -383,13 +278,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                     <input type="text" name="name" class="form-control" id="name" value="<?php echo $name ?>" placeholder="Name" maxlength="30" required="true">
                                 </div>
 
-                                <!-- Geschlecht 
-                                <div class="form-group">
-                                    <label for="sex">Geschlecht</label>
-                                    <input type="text" name="sex" class="form-control" id="sex" value="<?php echo $sex ?>" placeholder="Geschlecht (M/F/O)" maxlength="1" required="false" pattern="M|F|O">
-                                </div>
-                                -->
-
                                 <!-- Geschlecht -->
                                 <div class="form-group">
                                     <p>Wähle Geschlecht:</p>
@@ -399,20 +287,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                     <label for="f">Female</label>
                                     <input type="radio" id="o" name="sex" value="o">
                                     <label for="o">Other</label>
-                                    <!-- <label class="radio"><input type="radio" class="form-control" name="optradio" id="sex" value="M" >M</label>
-                                    <label class="radio"><input type="radio" class="form-control" name="optradio" id="sex" value="F" >F</label>
-                                    <label class="radio"><input type="radio" class="form-control" name="optradio" id="sex" value="O" >O</label> -->
                                 </div>
+
                                 <!-- Adresse -->
                                 <div class="form-group">
                                     <label for="street">Strasse, Hausnr.</label>
                                     <input type="text" name="street" class="form-control" id="street" value="<?php echo $street ?>" placeholder="Adresse" maxlength="50" required="false">
                                 </div>
+
                                 <!-- PLZ -->
                                 <div class="form-group">
                                     <label for="plz">PLZ</label>
                                     <input type="number" name="plz" class="form-control" id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl" maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
                                 </div>
+
                                 <!-- Ort -->
                                 <div class="form-group">
                                     <label for="city">Ort</label>
