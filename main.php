@@ -7,9 +7,31 @@ include('dbconnector.inc.php');
 $error = $message =  '';
 $fname = $name = $sex = $street = $plz = $city = $canton = $email = $tel = $profilepic = '';
 
-/*
-TODO WICHTIG!!! Nicht alle Felder sind Pflichtfelder!! Vorname und Tel nur!!!!!
-*/
+// Sessionhandling
+session_start();
+session_regenerate_id();
+
+if (isset($_SESSION['loggedin']) && isset($_SESSION['email'])) {
+    echo "<h1>Hello " . $_SESSION['email'] . "</h1>";
+} else {
+    header("Location: index.php");
+    die();
+}
+
+$selectStatement = "SELECT * FROM users WHERE email=?";
+
+// $sql = "SELECT * FROM users WHERE id=?"; // SQL with parameters
+$stmt = $mysqli->prepare($selectStatement); 
+$stmt->bind_param("s", $_SESSION['email']);
+$stmt->execute();
+$result = $stmt->get_result(); // get the mysqli result
+$uid = $result->fetch_assoc(); // fetch data   
+$_SESSION['uid'] = $uid; 
+
+
+
+
+print_r($_SESSION);
 
 // Wurden Daten mit "POST" gesendet?
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -188,6 +210,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 <!-- Nav Add Friend -->
                 <a class="btn btn-success ml-auto mr-0" role="button" href="#" data-toggle="modal" data-target="#addFModal">Freund hinzufügen</a>
+
+                <a class="btn btn-danger ml-auto mr-0" href="logout.php">Logout</a>
             </div>
         </div>
     </nav>

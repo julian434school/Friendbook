@@ -1,5 +1,6 @@
 <?php
 
+// Sessionhandling
 session_start();
 session_regenerate_id(true);
 
@@ -11,13 +12,7 @@ $error = $message =  '';
 $firstname = $lastname = $email = '';
 
 // Register Server POST verify
-if ($_SERVER['REQUEST_METHOD'] == "POST" && strcmp($firstname, "Array") == 0) {
-  // Ausgabe des gesamten $_POST Arrays
-  echo "<pre>";
-  echo "FOR DEBUGGING, REGISTER";
-  echo "Firstname: " . $firstname;
-  print_r($_POST);
-  echo "</pre>";
+if ($_SERVER['REQUEST_METHOD'] == "POST" && strcmp($firstname, "") !== 0) {
 
   // vorname ausgefüllt?
   if (isset($_POST['firstname'])) {
@@ -84,15 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strcmp($firstname, "Array") == 0) {
     $stmt->execute();
     // Verbindung schliessen
     $stmt->close();
-    // Weiterleitung auf login.php
+    // Weiterleitung auf main.php
+    $_SESSION['loggedin'] = true;
     header("Location: main.php");
   }
 }
 
 
-
 // Login Server POST verify
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && strcmp($firstname, "") == 0) {
 
   // email
   if (isset($_POST['email'])) {
@@ -107,7 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   } else {
     $error .= "Geben Sie bitte die E-Mail an.<br />";
   }
-
 
   // password
   if (isset($_POST['password'])) {
@@ -131,9 +125,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
       while ($row = $result->fetch_assoc()) {
         if (password_verify($password, $row['pword'])) {
-          // $_SESSION["email"] = $email;
+          $_SESSION['loggedin'] = true;
+          $_SESSION["email"] = $email;
           header("Location: main.php");
-          //die();
+          die();
         } else {
           $error .= "Benutzername oder Passwort sind falsch";
         }
