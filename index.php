@@ -207,12 +207,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && strcmp($firstname, "") == 0) {
                       <!-- Vorname -->
                       <div class="form-group">
                         <label for="firstname">Vorname *</label>
-                        <input type="text" name="firstname" class="form-control" id="firstname" value="<?php echo $firstname ?>" placeholder="Vorname" maxlength="30" required="true">
+                        <input type="text" name="firstname" class="form-control" id="firstname" value="<?php echo $firstname ?>" placeholder="Vorname" maxlength="30" pattern="(/^[A-Za-z]+$/)" required="true">
                       </div>
                       <!-- Nachname -->
                       <div class="form-group">
                         <label for="lastname">Nachname</label>
-                        <input type="text" name="lastname" class="form-control" id="lastname" value="<?php echo $lastname ?>" placeholder="Nachnamen" maxlength="30" required="true">
+                        <input type="text" name="lastname" class="form-control" id="lastname" value="<?php echo $lastname ?>" placeholder="Nachnamen" maxlength="30" pattern="(/^[A-Za-z]+$/)" required="true">
                       </div>
                       <!-- Email -->
                       <div class="form-group">

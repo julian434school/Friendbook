@@ -11,8 +11,8 @@ $fname = $name = $sex = $street = $plz = $city = $canton = $email = $tel = $prof
 session_start();
 session_regenerate_id();
 
+// Have this block to verify if the user is logged in the session in every file, where the user must be logged in
 if (isset($_SESSION['loggedin']) && isset($_SESSION['email'])) {
-    echo "<h1>Hello " . $_SESSION['email'] . "</h1>";
 } else {
     header("Location: index.php");
     die();
@@ -26,10 +26,7 @@ $stmt->execute();
 $result = $stmt->get_result(); // get the mysqli result
 $sessionData = $result->fetch_assoc(); // fetch data   
 
-print_r($sessionData);
-
 foreach ($sessionData as $key => $value) {
-    echo " " . $key . " ";
     if ($key == "uid") {
         $session_user_id = $value;
         break;
@@ -221,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 
-    <header class="masthead text-white" style="background-color: #baddff;">
+    <header class="masthead text-white pt-4" style="background-color: #baddff;">
         <div class="container">
             <h1>Freunde</h1>
 
@@ -233,6 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $stmt->execute();
             $result = $stmt->get_result(); // get the mysqli result
             $resultArray = $result->fetch_assoc(); // fetch data   
+            $stmt->close();
             ?>
 
             <div class="row mt-5 mb-5">
@@ -245,7 +243,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <!-- Profile Pic -->
                         <div class="text-center">
                             <img class="m-3" src="assets\img\friend_profile_picture.png" alt="Friendbook Logo" width="150px" height="150px">
-                            <!-- <h3 class="m-3">Julian Mathis</h3> -->
                         </div>
                         <div>
                             <?php foreach ($row as $key => $col) : ?>
@@ -284,20 +281,35 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                             $key = "Email: ";
                                             break;
                                     }
+                                    // Bsp. $key => Name: $col => Mathis
                                     echo $key;
                                     echo $col;
+                                    if ($key == "f_id") {
+                                    }
                                     ?>
                                 </h5>
                             <?php endforeach; ?>
                             <br>
+                            <div class="mt-2 mb-5">
+                                <br>
+                                <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
+                                <?php
+                                echo $globalCol;
+                                echo "F_ID: " . $resultArray['f_id'];
+                                ?>
 
+                                <form action='delete.php?f_id="<?php echo $resultArray['f_id'] ?>"' method="post">
+                                    <button type="submit" class="btn btn-danger ml-auto mr-0" role="button" name="submit" value="Delete">
+                                        Freund loeschen
+                                    </button>
+                                </form>
+
+
+                            </div>
                         </div>
-                        <div class="mt-4 mb-4">
-                            <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
-                            <a class="btn btn-danger ml-auto mr-0" role="button" href="#">Freund löschen</a>
-                        </div>
+
                     </div>
-                    <?php endforeach; ?>
+                <?php endforeach; ?>
             </div>
 
             <!-- Add Friend Modal -->
@@ -347,9 +359,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                     <input type="number" name="plz" class="form-control" id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl" maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
                                 </div>
 
-                                <!-- Ort -->
+                                <!-- Stadt -->
                                 <div class="form-group">
-                                    <label for="city">Ort</label>
+                                    <label for="city">Stadt</label>
                                     <input type="text" name="city" class="form-control" id="city" value="<?php echo $city ?>" placeholder="Stadt, Gemeinde, Dorf" maxlength="30" required="false">
                                 </div>
 
