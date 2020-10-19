@@ -18,14 +18,15 @@ if (isset($_SESSION['loggedin']) && isset($_SESSION['email'])) {
     die();
 }
 
+// Query to get userId with the email of the logged in session user
 $selectStatement = "SELECT * FROM users WHERE email=?";
-
 $stmt = $mysqli->prepare($selectStatement);
 $stmt->bind_param("s", $_SESSION['email']);
 $stmt->execute();
 $result = $stmt->get_result(); // get the mysqli result
 $sessionData = $result->fetch_assoc(); // fetch data   
 
+// Find uid attribute and assign to $session_user_id
 foreach ($sessionData as $key => $value) {
     if ($key == "uid") {
         $session_user_id = $value;
@@ -170,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($insertStatement);
         // Parameter an Query binden mit bind_param();
-        $stmt->bind_param("ssssissssbi", $name, $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic, $session_user_id);
+        $stmt->bind_param("sssssisssbi", $name, $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic, $session_user_id);
         // query ausführen mit execute();
         $stmt->execute();
         // Verbindung schliessen
@@ -201,16 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <img src="assets\img\friendbook_logo.png" alt="Friendbook Logo">
             </a>
             <div class="collapse navbar-collapse" id="navcol-1">
-
-                <!-- Search Friend -->
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search a friend" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-
-                <!-- Nav Add Friend -->
-                <a class="btn btn-success ml-auto mr-0" role="button" href="#" data-toggle="modal" data-target="#addFModal">Freund hinzufügen</a>
-
+                <!-- Nav Logout -->
                 <a class="btn btn-danger ml-auto mr-0" href="logout.php">Logout</a>
             </div>
         </div>
@@ -220,7 +212,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     <header class="masthead text-white pt-4" style="background-color: #baddff;">
         <div class="container">
-            <h1>Freunde</h1>
+            <div class="row">
+                <div class="col-3">
+                    <h1>Freunde</h1>
+                </div>
+                <div class="col-2 mt-auto mb-auto">
+                    <a class="btn btn-success" role="button" data-toggle="modal" data-target="#addFModal">Freund hinzufügen</a>
+                </div>
+            </div>
+
 
             <?php
             $selectStatement = "SELECT * FROM friend WHERE friend_of_user=?";
@@ -248,10 +248,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             <?php foreach ($row as $key => $col) : ?>
                                 <h5>
                                     <?php
+
                                     // Skip attributes like f_id 
                                     if ($key == "f_id" || $key == "profilepic" || $key == "friend_of_user") {
                                         continue;
                                     }
+
                                     switch ($key) {
                                         case "name":
                                             $key = "Name: ";
@@ -292,15 +294,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             <br>
                             <div class="mt-2 mb-5">
                                 <br>
-                                <a class="btn btn-warning ml-auto mr-0" role="button" href="#">Bearbeiten</a>
-                                <?php
-                                echo $globalCol;
-                                echo "F_ID: " . $resultArray['f_id'];
-                                ?>
+                                <form action='update.php?f_id="<?php echo $row['f_id'] ?>"' method="post">
+                                    <button type="submit" class="btn btn-warning ml-auto mr-0" role="button" name="submit" value="Delete">
+                                        Bearbeiten
+                                    </button>
+                                </form>
 
-                                <form action='delete.php?f_id="<?php echo $resultArray['f_id'] ?>"' method="post">
+                                <form action='delete.php?f_id="<?php echo $row['f_id'] ?>"' method="post">
                                     <button type="submit" class="btn btn-danger ml-auto mr-0" role="button" name="submit" value="Delete">
-                                        Freund loeschen
+                                        Loeschen
                                     </button>
                                 </form>
 

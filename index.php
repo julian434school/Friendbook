@@ -174,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && strcmp($firstname, "") == 0) {
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <h1 class="mb-5">Willkommen zu Friendbook! PHP<br>Melde dich zuerst bitte an.</h1>
+          <h1 class="mb-5">Willkommen zu Friendbook!<br>Registriere oder melde dich zuerst bitte an.</h1>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 
@@ -299,31 +299,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && strcmp($firstname, "") == 0) {
             <h3>Persönliches Freundebuch</h3>
             <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="showcase">
-    <div class="container-fluid p-0">
-      <div class="row no-gutters">
-        <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image:url(&quot;assets/img/bg-showcase-1.jpg&quot;);"><span></span></div>
-        <div class="col-lg-6 my-auto order-lg-1 showcase-text">
-          <h2>Fully Responsive Design</h2>
-          <p class="lead mb-0">When you use a theme created with Bootstrap, you know that the theme will look great on any device, whether it's a phone, tablet, or desktop the page will behave responsively!</p>
-        </div>
-      </div>
-      <div class="row no-gutters">
-        <div class="col-lg-6 text-white showcase-img" style="background-image:url(&quot;assets/img/bg-showcase-2.jpg&quot;);"><span></span></div>
-        <div class="col-lg-6 my-auto order-lg-1 showcase-text">
-          <h2>Updated For Bootstrap 4</h2>
-          <p class="lead mb-0">Newly improved, and full of great utility classes, Bootstrap 4 is leading the way in mobile responsive web development! All of the themes are now using Bootstrap 4!</p>
-        </div>
-      </div>
-      <div class="row no-gutters">
-        <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image:url(&quot;assets/img/bg-showcase-3.jpg&quot;);"><span></span></div>
-        <div class="col-lg-6 my-auto order-lg-1 showcase-text">
-          <h2>Easy to Use &amp;&nbsp;Customize</h2>
-          <p class="lead mb-0">Landing Page is just HTML and CSS with a splash of SCSS for users who demand some deeper customization options. Out of the box, just add your content and images, and your new landing page will be ready to go!</p>
         </div>
       </div>
     </div>

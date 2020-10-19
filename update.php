@@ -13,19 +13,12 @@ if (isset($_SESSION['loggedin']) && isset($_SESSION['email'])) {
     header("Location: index.php");
     die();
 }
-// Get f_id from emitted POST when delete button pressed 
 $f_id = $_GET['f_id'];
-// Remove "" from the string, because the query requires an int and not a string
-$f_id = trim($f_id, '"');
 
-// Query to delete a friend with its f_id
-$deleteStatement = "DELETE FROM friend WHERE f_id=?";
-$stmt = $mysqli->prepare($deleteStatement);
-$stmt->bind_param("i", $f_id);
+$updateStatement = "UPDATE friend SET name=?, fname=?, sex=?, street=?, city=?, plz=?, canton=?, tel=?, email=?, profilepic=? WHERE f_id=?";
+$stmt = $mysqli->prepare($updateStatement);
+$stmt->bind_param("sssssisssbi", $fname,  $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic, $f_id);
 $stmt->execute();
 $stmt->close();
-
-
-echo "done";
-// header("Location: main.php");
+header("Location: main.php");
 ?>
