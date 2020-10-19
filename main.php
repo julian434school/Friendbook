@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($insertStatement);
         // Parameter an Query binden mit bind_param();
-        $stmt->bind_param("ssssissssbi", $name, $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic, $session_user_id);
+        $stmt->bind_param("sssssisssbi", $name, $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic, $session_user_id);
         // query ausführen mit execute();
         $stmt->execute();
         // Verbindung schliessen
