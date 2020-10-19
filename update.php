@@ -15,9 +15,9 @@ if (isset($_SESSION['loggedin']) && isset($_SESSION['email'])) {
 }
 $f_id = $_GET['f_id'];
 
-$updateStatement = "UPDATE friend SET name=?, fname=?, sex=?, street=?, city=?, plz=?, canton=?, tel=?, email=?, profilepic=? WHERE f_id=?";
+$updateStatement = "UPDATE friend SET name=?, fname=?, sex=?, street=?, city=?, plz=?, tel=?, email=?, profilepic=? WHERE f_id=?";
 $stmt = $mysqli->prepare($updateStatement);
-$stmt->bind_param("sssssisssbi", $fname,  $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic, $f_id);
+$stmt->bind_param("sssssisssbi", $fname,  $fname, $sex, $street, $city, $plz, $tel, $email, $profilepic, $f_id);
 $stmt->execute();
 $stmt->close();
 header("Location: main.php");

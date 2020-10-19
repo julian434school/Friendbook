@@ -24,8 +24,5 @@ $stmt = $mysqli->prepare($deleteStatement);
 $stmt->bind_param("i", $f_id);
 $stmt->execute();
 $stmt->close();
-
-
-echo "done";
 header("Location: main.php");
 ?>

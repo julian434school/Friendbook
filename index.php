@@ -83,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strcmp($firstname, "") !== 0) {
     $_SESSION['loggedin'] = true;
     header("Location: main.php");
   }
+  echo $error;
 }
 
 

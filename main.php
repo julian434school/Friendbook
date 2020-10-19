@@ -5,7 +5,7 @@ include('dbconnector.inc.php');
 
 // Initialisierung
 $error = $message =  '';
-$fname = $name = $sex = $street = $plz = $city = $canton = $email = $tel = $profilepic = '';
+$fname = $name = $sex = $street = $plz = $city = $email = $tel = $profilepic;
 
 // Sessionhandling
 session_start();
@@ -47,12 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['name'])) {
         //trim and sanitize
         $name = trim(htmlspecialchars($_POST['name']));
-        //mindestens 1 Zeichen und maximal 30 Zeichen lang
-        if (empty($name) || strlen($name) > 30) {
-            $error .= "Geben Sie bitte einen korrekten Nachname ein.<br />";
-        }
-    } else {
-        $error .= "Geben Sie bitte einen Nachname ein.<br />";
     }
 
 
@@ -73,73 +67,30 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['sex'])) {
         //trim and sanitize
         $sex = trim(htmlspecialchars($_POST['sex']));
-        //maximal 1 Zeichen
-        if (empty($sex) || strlen($sex) > 1) {
-            $error .= "Geben Sie bitte ein korrektes Geschlecht ein.<br />";
-        }
-    } else {
-        $error .= "Geben Sie bitte einen Geschlecht ein.<br />";
     }
 
     // adresse ausgefüllt?
     if (isset($_POST['street'])) {
         //trim and sanitize
         $street = trim(htmlspecialchars($_POST['street']));
-        //mindestens 1 Zeichen und maximal 50 Zeichen lang
-        if (empty($street) || strlen($street) > 50) {
-            $error .= "Geben Sie bitte eine korrekte Adresse ein.<br />";
-        }
-    } else {
-        $error .= "Geben Sie bitte einen Adresse ein.<br />";
     }
 
     // plz ausgefüllt? +++braucht noch !preg_match+++
     if (isset($_POST['plz'])) {
         //trim and sanitize
         $plz = trim(htmlspecialchars($_POST['plz']));
-        //mindestens 1 Zeichen und maximal 30 Zeichen lang
-        if (empty($plz) || strlen($plz) > 4) {
-            $error .= "Geben Sie bitte eine korrekte Postleitzahl ein.<br />";
-        }
-    } else {
-        $error .= "Geben Sie bitte einen Postleitzahl ein.<br />";
     }
 
     // city ausgefüllt?
     if (isset($_POST['city'])) {
         //trim and sanitize
         $city = trim(htmlspecialchars($_POST['city']));
-        //mindestens 1 Zeichen und maximal 30 Zeichen lang
-        if (empty($city) || strlen($city) > 30) {
-            $error .= "Geben Sie bitte eine korrekte Stadt an.<br />";
-        }
-    } else {
-        $error .= "Geben Sie bitte eine Stadt an.<br />";
     }
-
-    $canton = "BS";
-    // canton ausgefüllt +++braucht noch !preg_match+++
-    //if (isset($_POST['canton'])) {
-    //trim and sanitize
-    //$canton = trim($_POST['canton']);
-    //immer 2 Zeichen
-    //if (empty($canton) || strlen($canton) > 2) {
-    // $error .= "Geben Sie bitte einen korrekten Kanton an.<br />";
-    //}
-    //} else {
-    //$error .= "Geben Sie bitte einen Kanton an.<br />";
-    // }
 
     // email ausgefüllt?
     if (isset($_POST['email'])) {
         //trim
         $email = trim($_POST['email']);
-        //mindestens 1 Zeichen und maximal 100 Zeichen lang, gültige Emailadresse
-        if (empty($email) || strlen($email) > 100 || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            $error .= "Geben Sie bitte eine korrekten Emailadresse ein.<br />";
-        }
-    } else {
-        $error .= "Geben Sie bitte eine Emailadresse ein.<br />";
     }
 
     // telefon ausgefüllt?
@@ -163,15 +114,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         fclose($file);
     }
 
+    echo $error;
+
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if (empty($error)) {
 
         // INPUT Query erstellen, welches firstname, lastname, password, email in die Datenbank schreibt
-        $insertStatement = "INSERT into friend(name, fname, sex, street, city, plz, canton, tel, email, profilepic, friend_of_user) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        $insertStatement = "INSERT into friend(name, fname, sex, street, city, plz, tel, email, profilepic, friend_of_user) VALUES (?,?,?,?,?,?,?,?,?,?)";
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($insertStatement);
         // Parameter an Query binden mit bind_param();
-        $stmt->bind_param("sssssisssbi", $name, $fname, $sex, $street, $city, $plz, $canton, $tel, $email, $profilepic, $session_user_id);
+        $stmt->bind_param("sssssissbi", $name, $fname, $sex, $street, $city, $plz, $tel, $email, $profilepic, $session_user_id);
         // query ausführen mit execute();
         $stmt->execute();
         // Verbindung schliessen
@@ -273,9 +226,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                         case "plz":
                                             $key = "PLZ: ";
                                             break;
-                                        case "canton":
-                                            $key = "Kanton: ";
-                                            break;
                                         case "tel":
                                             $key = "Telefon: ";
                                             break;
@@ -330,86 +280,55 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                 <!-- Vorname -->
                                 <div class="form-group">
                                     <label for="fname">Vorname *</label>
-                                    <input type="text" name="fname" class="form-control" id="fname" value="<?php echo $fname ?>" placeholder="Vorname" maxlength="30" required="true">
+                                    <input type="text" name="fname" class="form-control" id="fname" value="<?php echo $fname ?>" placeholder="Vorname" maxlength="30" required>
                                 </div>
                                 <!-- Nachname -->
                                 <div class="form-group">
-                                    <label for="name">Nachname *</label>
-                                    <input type="text" name="name" class="form-control" id="name" value="<?php echo $name ?>" placeholder="Name" maxlength="30" required="true">
+                                    <label for="name">Nachname</label>
+                                    <input type="text" name="name" class="form-control" id="name" value="<?php echo $name ?>" placeholder="Name" maxlength="30">
                                 </div>
 
+                                <?php 
+                                ?>
                                 <!-- Geschlecht -->
                                 <div class="form-group">
                                     <p>Wähle Geschlecht:</p>
-                                    <input type="radio" id="m" name="sex" value="m">
+                                    <input type="radio" id="m" name="sex" value="<?php echo "m" ?>">
                                     <label for="m">Male</label>
-                                    <input type="radio" id="f" name="sex" value="f">
+                                    <input type="radio" id="f" name="sex" value="<?php echo "f" ?>">
                                     <label for="f">Female</label>
-                                    <input type="radio" id="o" name="sex" value="o">
+                                    <input type="radio" id="o" name="sex" value="<?php echo "o" ?>">
                                     <label for="o">Other</label>
                                 </div>
 
                                 <!-- Adresse -->
                                 <div class="form-group">
                                     <label for="street">Strasse, Hausnr.</label>
-                                    <input type="text" name="street" class="form-control" id="street" value="<?php echo $street ?>" placeholder="Adresse" maxlength="50" required="false">
+                                    <input type="text" name="street" class="form-control" id="street" value="<?php echo $street ?>" placeholder="Adresse" maxlength="50">
                                 </div>
 
                                 <!-- PLZ -->
                                 <div class="form-group">
                                     <label for="plz">PLZ</label>
-                                    <input type="number" name="plz" class="form-control" id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl" maxlength="4" required="false" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
+                                    <input type="number" name="plz" class="form-control" id="plz" value="<?php echo $plz ?>" placeholder="Postleitzahl" maxlength="4" pattern="([1-468][0-9]|[57][0-7]|9[0-6])[0-9]{2}">
                                 </div>
 
                                 <!-- Stadt -->
                                 <div class="form-group">
                                     <label for="city">Stadt</label>
-                                    <input type="text" name="city" class="form-control" id="city" value="<?php echo $city ?>" placeholder="Stadt, Gemeinde, Dorf" maxlength="30" required="false">
-                                </div>
-
-                                <!-- Kanton -->
-                                <div class="form-group">
-                                    <label for="canton">Kanton</label>
-                                    <select class="browser-default custom-select">
-                                        <option value="AG">AG</option>
-                                        <option value="AI">AI</option>
-                                        <option value="AR">AR</option>
-                                        <option value="BE">BE</option>
-                                        <option value="BL">BL</option>
-                                        <option value="BS">BS</option>
-                                        <option value="FR">FR</option>
-                                        <option value="GE">GE</option>
-                                        <option value="GL">GL</option>
-                                        <option value="GR">GR</option>
-                                        <option value="JU">JU</option>
-                                        <option value="LU">LU</option>
-                                        <option value="NE">NE</option>
-                                        <option value="NW">NW</option>
-                                        <option value="OW">OW</option>
-                                        <option value="SG">SG</option>
-                                        <option value="SH">SH</option>
-                                        <option value="SO">SO</option>
-                                        <option value="SZ">SZ</option>
-                                        <option value="TG">TG</option>
-                                        <option value="TI">TI</option>
-                                        <option value="UR">UR</option>
-                                        <option value="VD">VD</option>
-                                        <option value="VS">VS</option>
-                                        <option value="ZG">ZG</option>
-                                        <option value="ZH">ZH</option>
-                                    </select>
+                                    <input type="text" name="city" class="form-control" id="city" value="<?php echo $city ?>" placeholder="Stadt, Gemeinde, Dorf" maxlength="30">
                                 </div>
 
                                 <!-- E-Mail -->
                                 <div class="form-group">
                                     <label for="email">E-Mail</label>
-                                    <input type="email" name="email" class="form-control" id="email" value="<?php echo $email ?>" placeholder="E-Mail" maxlength="100" required="false">
+                                    <input type="email" name="email" class="form-control" id="email" value="<?php echo $email ?>" placeholder="E-Mail" maxlength="100">
                                 </div>
 
                                 <!-- Telefonnummer -->
                                 <div class="form-group">
-                                    <label for="tel">Telefon</label>
-                                    <input type="text" name="tel" class="form-control" id="tel" value="<?php echo $tel ?>" placeholder="Telefon-Format: '0612345678'" minlength="9" maxlength="13" required="false" pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
+                                    <label for="tel">Telefon *</label>
+                                    <input type="text" name="tel" class="form-control" id="tel" value="<?php echo $tel ?>" placeholder="Telefon-Format: '0612345678'" minlength="9" maxlength="13" pattern="0(2[1-246-7]|3[1-4]|4[13-4]|5[25-6]|6[1-2]|7[15-68-9]|8[17]|91)[0-9]{7}">
                                 </div>
 
                                 <!-- Profile Picture Upload -->
