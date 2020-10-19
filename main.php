@@ -5,7 +5,7 @@ include('dbconnector.inc.php');
 
 // Initialisierung
 $error = $message =  '';
-$fname = $name = $sex = $street = $plz = $city = $email = $tel = $profilepic;
+$fname = $name = $sex = $street = $plz = $city = $email = $tel = $profilepic = "";
 
 // Sessionhandling
 session_start();
