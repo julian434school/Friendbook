@@ -38,11 +38,6 @@ foreach ($sessionData as $key => $value) {
 // Wurden Daten mit "POST" gesendet?
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
-    // Ausgabe des gesamten $_POST Arrays
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-
     // nachname ausgefüllt?
     if (isset($_POST['name'])) {
         //trim and sanitize
@@ -113,8 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         fclose($input);
         fclose($file);
     }
-
-    echo $error;
 
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if (empty($error)) {
