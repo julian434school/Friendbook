@@ -27,5 +27,5 @@ $stmt->close();
 
 
 echo "done";
-// header("Location: main.php");
+header("Location: main.php");
 ?>
